@@ -31,3 +31,5 @@ $stmt->execute();
 echo "<h2>✅ Asistencia registrada correctamente</h2>";
 echo "<p>Gracias por participar del Congreso Nacional de Gestores Tecnológicos.</p>";
 ?>
+
+
