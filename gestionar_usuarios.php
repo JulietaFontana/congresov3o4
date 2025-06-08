@@ -1,18 +1,26 @@
 <?php
 session_start();
-if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'admin') {
+require 'db.php';
+
+if (!isset($_SESSION['roles']) || !in_array('admin', $_SESSION['roles'])) {
     header("Location: index.php");
     exit();
 }
 
-require 'db.php';
-
-$result = $conn->query("SELECT nombre, apellido, dni, email, telefono, rol FROM usuarios");
+// Obtener usuarios y sus roles actuales
+$sql = "
+SELECT u.id, u.nombre, u.apellido, u.dni, u.email, u.telefono,
+       GROUP_CONCAT(r.nombre ORDER BY r.nombre SEPARATOR ', ') AS roles
+FROM usuarios u
+LEFT JOIN usuario_roles ur ON u.id = ur.id_usuario
+LEFT JOIN roles r ON ur.id_rol = r.id
+GROUP BY u.id
+";
+$result = $conn->query($sql);
 if (!$result) {
     die("Error en la consulta: " . $conn->error);
 }
 
-// Debug: Mostrar número de registros encontrados
 $total_registros = $result->num_rows;
 ?>
 
@@ -30,7 +38,7 @@ $total_registros = $result->num_rows;
 <section>
   <div class="container">
     <h2>👥 Gestión de Usuarios</h2>
-    <p>Total registros encontrados: <?php echo $total_registros; ?></p> <!-- Línea de debug -->
+    <p>Total registros encontrados: <?php echo $total_registros; ?></p>
     <table class="tabla-usuarios">
       <tr>
         <th>Nombre</th>
@@ -38,36 +46,32 @@ $total_registros = $result->num_rows;
         <th>DNI</th>
         <th>Email</th>
         <th>Teléfono</th>
-        <th>Rol Actual</th>
-        <th>Cambiar Rol</th>
+        <th>Roles actuales</th>
+        <th>Agregar rol</th>
       </tr>
-      <?php
-      if ($total_registros > 0):
-          while($row = $result->fetch_assoc()):
-      ?>
+      <?php while ($row = $result->fetch_assoc()): ?>
       <tr>
-        <td><?php echo htmlspecialchars($row['nombre']); ?></td>
-        <td><?php echo htmlspecialchars($row['apellido']); ?></td>
-        <td><?php echo htmlspecialchars($row['dni']); ?></td>
-        <td><?php echo htmlspecialchars($row['email']); ?></td>
-        <td><?php echo htmlspecialchars($row['telefono']); ?></td>
-        <td><?php echo $row['rol']; ?></td>
+        <td><?= htmlspecialchars($row['nombre']) ?></td>
+        <td><?= htmlspecialchars($row['apellido']) ?></td>
+        <td><?= htmlspecialchars($row['dni']) ?></td>
+        <td><?= htmlspecialchars($row['email']) ?></td>
+        <td><?= htmlspecialchars($row['telefono']) ?></td>
+        <td><?= htmlspecialchars($row['roles']) ?: 'Ninguno' ?></td>
         <td>
-            <form method="POST" action="cambiar_rol.php">
-            <input type="hidden" name="email" value="<?php echo $row['email']; ?>">
+          <form method="POST" action="cambiar_rol.php">
+            <input type="hidden" name="email" value="<?= htmlspecialchars($row['email']) ?>">
             <select name="nuevo_rol" required>
-                <option value="user" <?php if($row['rol']=='user') echo 'selected'; ?>>Usuario</option>
-                <option value="ponente" <?php if($row['rol']=='ponente') echo 'selected'; ?>>Ponente</option>
-                <option value="admin" <?php if($row['rol']=='admin') echo 'selected'; ?>>Admin</option>
+              <option value="" disabled selected>Elegir rol</option>
+              <option value="user">Usuario</option>
+              <option value="ponente">Ponente</option>
+              <option value="admin">Admin</option>
             </select>
-            <button type="submit">Actualizar</button>
-            </form>
+            <button type="submit">Agregar</button>
+          </form>
         </td>
       </tr>
-      <?php
-          endwhile;
-      else:
-      ?>
+      <?php endwhile; ?>
+      <?php if ($total_registros == 0): ?>
       <tr><td colspan="7">No se encontraron registros.</td></tr>
       <?php endif; ?>
     </table>

@@ -16,7 +16,27 @@ if ($user && password_verify($password, $user['password'])) {
     $_SESSION['nombre'] = $user['nombre'];
     $_SESSION['apellido'] = $user['apellido'];
     $_SESSION['email'] = $user['email'];
-    $_SESSION['rol'] = $user['rol'];
+    $_SESSION['id'] = $user['id'];
+
+    // 🚨 Nueva parte: Obtener todos los roles
+    $roles_sql = "
+        SELECT r.nombre 
+        FROM usuario_roles ur
+        JOIN roles r ON ur.id_rol = r.id
+        WHERE ur.id_usuario = ?
+    ";
+    $roles_stmt = $conn->prepare($roles_sql);
+    $roles_stmt->bind_param("i", $user['id']);
+    $roles_stmt->execute();
+    $roles_result = $roles_stmt->get_result();
+
+    $roles = [];
+    while ($row = $roles_result->fetch_assoc()) {
+        $roles[] = $row['nombre'];
+    }
+
+    $_SESSION['roles'] = $roles; // Guarda todos los roles en sesión
+
     header("Location: index.php");
 } else {
     echo "Credenciales inválidas.";

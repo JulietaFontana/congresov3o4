@@ -1,11 +1,11 @@
 CREATE DATABASE IF NOT EXISTS congreso;
 USE congreso;
 
+-- Tabla de usuarios (sin columna rol)
 CREATE TABLE IF NOT EXISTS usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    rol ENUM('admin', 'ponente', 'user') NOT NULL DEFAULT 'user',
     nombre VARCHAR(50) NOT NULL,
     apellido VARCHAR(50) NOT NULL,
     dni VARCHAR(20) NOT NULL,
@@ -13,18 +13,43 @@ CREATE TABLE IF NOT EXISTS usuarios (
     telefono VARCHAR(20) NOT NULL
 );
 
--- Crear usuario admin inicial (email: admin@admin.com, pass: admin123)
-INSERT INTO usuarios (username, password, rol, nombre, apellido, dni, email, telefono)
+-- Nueva tabla de roles
+CREATE TABLE IF NOT EXISTS roles (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(20) NOT NULL UNIQUE -- ej: 'admin', 'ponente', 'user'
+);
+
+-- Tabla de unión usuarios-roles (relación muchos a muchos)
+CREATE TABLE IF NOT EXISTS usuario_roles (
+    id_usuario INT,
+    id_rol INT,
+    PRIMARY KEY (id_usuario, id_rol),
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id),
+    FOREIGN KEY (id_rol) REFERENCES roles(id)
+);
+
+-- Insertar roles básicos
+INSERT INTO roles (nombre) VALUES ('admin'), ('ponente'), ('user');
+
+-- Insertar usuario admin
+INSERT INTO usuarios (username, password, nombre, apellido, dni, email, telefono)
 VALUES (
     'admin@admin.com',
-    '$2y$10$gzY2MfhsNoCJlYwIKKjMYuKW1S6aJmixtvTF2OtCkeo5X8kp.6hYq', -- hash para admin123
-    'admin',
+    '$2y$10$gzY2MfhsNoCJlYwIKKjMYuKW1S6aJmixtvTF2OtCkeo5X8kp.6hYq', -- admin123
     'Admin',
     'Principal',
     '12345678',
     'admin@admin.com',
     '123456789'
 );
+
+-- Asignar múltiples roles al usuario admin (ej: admin y user)
+INSERT INTO usuario_roles (id_usuario, id_rol)
+VALUES 
+    (1, 1), -- admin
+    (1, 3); -- user
+
+-- Tabla de notificaciones
 CREATE TABLE IF NOT EXISTS notificaciones (
     id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_email VARCHAR(100) NOT NULL,
@@ -33,7 +58,8 @@ CREATE TABLE IF NOT EXISTS notificaciones (
     fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE certificados (
+-- Tabla de certificados
+CREATE TABLE IF NOT EXISTS certificados (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario INT NOT NULL,
     nombre_evento VARCHAR(255),
@@ -41,9 +67,8 @@ CREATE TABLE certificados (
     archivo_certificado VARCHAR(255)
 );
 
-    --asistencias
-
-    CREATE TABLE IF NOT EXISTS asistencias (
+-- Tabla de asistencias
+CREATE TABLE IF NOT EXISTS asistencias (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario INT NOT NULL,
     id_evento INT DEFAULT 1,
@@ -52,15 +77,17 @@ CREATE TABLE certificados (
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id)
 );
 
- -- qr
- CREATE TABLE qr_tokens (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  token VARCHAR(100) UNIQUE NOT NULL,
-  id_evento INT NOT NULL DEFAULT 1,
-  fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
-  valido BOOLEAN DEFAULT 1
+-- Tabla de tokens QR
+CREATE TABLE IF NOT EXISTS qr_tokens (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    token VARCHAR(100) UNIQUE NOT NULL,
+    id_evento INT NOT NULL DEFAULT 1,
+    fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
+    valido BOOLEAN DEFAULT 1
 );
-CREATE TABLE IF NOT EXISTS asistencias (
+
+-- Tabla de asistencias por token QR (opcional si deseas mantenerla)
+CREATE TABLE IF NOT EXISTS asistencias_qr (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario INT NOT NULL,
     token VARCHAR(255) NOT NULL,
@@ -68,15 +95,30 @@ CREATE TABLE IF NOT EXISTS asistencias (
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id)
 );
 
+-- Crear usuario de base de datos
+CREATE USER 'congreso_user'@'localhost' IDENTIFIED BY 'password123';
+
+-- Otorgar permisos
+GRANT ALL PRIVILEGES ON congreso.* TO 'congreso_user'@'localhost';
+FLUSH PRIVILEGES;
 
 
-    -- Crear usuario con contraseña
-    CREATE USER 'congreso_user'@'localhost' IDENTIFIED BY 'password123';
 
-    -- Otorgar permisos para la base de datos congreso
-    GRANT ALL PRIVILEGES ON congreso.* TO 'congreso_user'@'localhost';
+-- Insertar un nuevo usuario (solo rol ponente)
+INSERT INTO usuarios (username, password, nombre, apellido, dni, email, telefono)
+VALUES (
+    'ponente@ejemplo.com',
+    '$2y$10$2u5zF4jXaZhnXAoEyNSe.eUz7PlQUaHoU8hQAV2hArsPvC8I4b79y', -- hash de ponente123
+    'Laura',
+    'Gómez',
+    '87654321',
+    'ponente@ejemplo.com',
+    '987654321'
+);
 
-
-    -- Aplicar los cambios de permisos
-    FLUSH PRIVILEGES;
-
+-- Asignar rol 'ponente' (id_rol = 2)
+INSERT INTO usuario_roles (id_usuario, id_rol)
+VALUES (
+    LAST_INSERT_ID(), -- obtiene el id del usuario recién insertado
+    2
+);

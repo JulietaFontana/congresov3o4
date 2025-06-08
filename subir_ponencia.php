@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'ponente') {
+if (!isset($_SESSION['roles']) || !in_array('ponente', $_SESSION['roles'])) {
     header("Location: index.php");
     exit();
 }
