@@ -45,7 +45,7 @@
   <nav>
     <a href="index.php">Inicio</a>
     <a href="acerca.php">Acerca</a>
-    <a href="ponentes.php">Ponentes</a>
+    <a href="Ponentes.php">Expositores</a>
     <a href="agenda.php">Agenda</a>
     <a href="contacto.php">Contacto</a>
     <a href="certificaciones.php">Certificados</a>
@@ -56,6 +56,7 @@
 
     <?php if (isset($_SESSION['roles']) && in_array('admin', $_SESSION['roles'])): ?>
       <a href="gestionar_usuarios.php" style="color: #ffcc00;">👥 Gestionar Usuarios</a>
+      <a href="gestionar_ejes.php" style="color: #ffcc00;">📚 Gestionar Ejes</a>
 
       <?php
         $hoy = date('Y-m-d');
@@ -67,4 +68,5 @@
       <?php endif; ?>
     <?php endif; ?>
   </nav>
+
 </header>

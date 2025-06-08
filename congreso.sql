@@ -78,6 +78,12 @@ CREATE TABLE asistencias_qr (
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id) ON DELETE CASCADE
 );
 
+-- ✅ Tabla de Ejes Temáticos
+CREATE TABLE ejes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL
+);
+
 -- Insertar roles principales
 INSERT INTO roles (nombre) VALUES 
     ('admin'), 
@@ -113,12 +119,23 @@ VALUES (
     'ponente@ejemplo.com',
     '987654321'
 );
+-- Tabla de ponencias
+CREATE TABLE ponencias (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_usuario INT NOT NULL,
+    id_eje INT NOT NULL,
+    archivo VARCHAR(255) NOT NULL,
+    fecha_subida DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_eje) REFERENCES ejes(id) ON DELETE CASCADE
+);
+
 
 -- Asignar rol ponente (id 2)
 INSERT INTO usuario_roles (id_usuario, id_rol)
 VALUES (LAST_INSERT_ID(), 2);
 
--- Crear usuario MySQL
+-- Crear usuario MySQL (opcional)
 CREATE USER IF NOT EXISTS 'congreso_user'@'localhost' IDENTIFIED BY 'password123';
 GRANT ALL PRIVILEGES ON congreso.* TO 'congreso_user'@'localhost';
 FLUSH PRIVILEGES;
