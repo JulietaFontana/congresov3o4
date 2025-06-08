@@ -2,8 +2,8 @@
 session_start();
 require_once 'db.php';
 
-// ✅ Solo admins pueden acceder
-if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'admin') {
+// ✅ Solo admins pueden acceder (nueva estructura con roles múltiples)
+if (!isset($_SESSION['roles']) || !in_array('admin', $_SESSION['roles'])) {
     header("Location: login.php");
     exit();
 }
@@ -11,7 +11,7 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'admin') {
 // ✅ Controlar fechas válidas del congreso
 $hoy = date('Y-m-d');
 $inicioCongreso = '2020-06-10';
-$finCongreso = '2028-06-12';
+$finCongreso = '2029-06-12';
 
 $accesoHabilitado = ($hoy >= $inicioCongreso && $hoy <= $finCongreso);
 ?>

@@ -55,16 +55,16 @@
     <a href="contacto.php">Contacto</a>
     <a href="certificaciones.php">Certificados</a>
 
-    <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'ponente'): ?>
+    <?php if (isset($_SESSION['roles']) && in_array('ponente', $_SESSION['roles'])): ?>
       <a href="subir_ponencia.php" style="color: #ffcc00;">📄 Subir ponencia</a>
     <?php endif; ?>
 
-    <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'admin'): ?>
+    <?php if (isset($_SESSION['roles']) && in_array('admin', $_SESSION['roles'])): ?>
       <a href="gestionar_usuarios.php" style="color: #ffcc00;">👥 Gestionar Usuarios</a>
       <?php
         $hoy = date('Y-m-d');
         $inicio_congreso = '2020-06-10';
-        $fin_congreso = '2028-06-12';
+        $fin_congreso = '2029-06-12';
         if ($hoy >= $inicio_congreso && $hoy <= $fin_congreso):
       ?>
         <a href="qr_dinamico.php" style="color: #ffcc00;">📷 QR Asistencia</a>

@@ -165,59 +165,57 @@ body {
 }
 
 /*tabla */
-.tabla-usuarios {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-  font-family: Arial, sans-serif;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+.usuario-card {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.tabla-usuarios th, .tabla-usuarios td {
-  padding: 12px 15px;
-  border: 1px solid #ddd;
-  text-align: center;
+.usuario-info {
+  flex-grow: 1;
 }
 
-.tabla-usuarios th {
-  background-color: #004080;
-  color: white;
-  font-weight: bold;
+.acciones {
+  text-align: right;
 }
 
-.tabla-usuarios tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-
-.tabla-usuarios tr:hover {
-  background-color: #e6f7ff;
-}
-
-.tabla-usuarios select {
-  padding: 5px;
-  border-radius: 4px;
-}
-
-.tabla-usuarios button {
-  padding: 5px 10px;
-  background-color: #004080;
-  color: white;
+.btn-eliminar {
+  background-color: transparent;
   border: none;
-  border-radius: 4px;
   cursor: pointer;
+  font-size: 18px;
+  color: red;
 }
 
-.tabla-usuarios button:hover {
-  background-color: #0066cc;
+.nuevo-usuario-form {
+  display: none;
+  margin-top: 15px;
+  border: 1px dashed #999;
+  padding: 15px;
 }
 
-.tabla-usuarios td, .tabla-usuarios th {
-  color: #333 !important; /* Aseguramos color de texto oscuro */
-  background-color: white !important; /* Fondo claro */
-  visibility: visible !important;
-  opacity: 1 !important;
-  display: table-cell !important;
+.botones-finales {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
 }
+
+.btn-principal {
+  background-color: #0056b3;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.btn-principal:hover {
+  background-color: #0056b3;
+}
+
 /*    */
 
 

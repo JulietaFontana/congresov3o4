@@ -1,11 +1,15 @@
-CREATE DATABASE IF NOT EXISTS congreso;
+-- Borrar la base de datos completa (incluye todas las tablas y datos)
+DROP DATABASE IF EXISTS congreso;
+
+-- Crear nuevamente la base y su contenido desde cero
+CREATE DATABASE congreso;
 USE congreso;
 
-CREATE TABLE IF NOT EXISTS usuarios (
+-- Tabla de usuarios
+CREATE TABLE usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    rol ENUM('admin', 'ponente', 'user') NOT NULL DEFAULT 'user',
     nombre VARCHAR(50) NOT NULL,
     apellido VARCHAR(50) NOT NULL,
     dni VARCHAR(20) NOT NULL,
@@ -13,19 +17,23 @@ CREATE TABLE IF NOT EXISTS usuarios (
     telefono VARCHAR(20) NOT NULL
 );
 
--- Crear usuario admin inicial (email: admin@admin.com, pass: admin123)
-INSERT INTO usuarios (username, password, rol, nombre, apellido, dni, email, telefono)
-VALUES (
-    'admin@admin.com',
-    '$2y$10$gzY2MfhsNoCJlYwIKKjMYuKW1S6aJmixtvTF2OtCkeo5X8kp.6hYq', -- hash para admin123
-    'admin',
-    'Admin',
-    'Principal',
-    '12345678',
-    'admin@admin.com',
-    '123456789'
+-- Tabla de roles
+CREATE TABLE roles (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(20) NOT NULL UNIQUE
 );
-CREATE TABLE IF NOT EXISTS notificaciones (
+
+-- Relación muchos a muchos entre usuarios y roles
+CREATE TABLE usuario_roles (
+    id_usuario INT,
+    id_rol INT,
+    PRIMARY KEY (id_usuario, id_rol),
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_rol) REFERENCES roles(id) ON DELETE CASCADE
+);
+
+-- Tabla de notificaciones
+CREATE TABLE notificaciones (
     id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_email VARCHAR(100) NOT NULL,
     mensaje TEXT NOT NULL,
@@ -33,6 +41,7 @@ CREATE TABLE IF NOT EXISTS notificaciones (
     fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Tabla de certificados
 CREATE TABLE certificados (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario INT NOT NULL,
@@ -41,42 +50,75 @@ CREATE TABLE certificados (
     archivo_certificado VARCHAR(255)
 );
 
-    --asistencias
-
-    CREATE TABLE IF NOT EXISTS asistencias (
+-- Tabla de asistencias
+CREATE TABLE asistencias (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario INT NOT NULL,
     id_evento INT DEFAULT 1,
     fecha_hora DATETIME DEFAULT CURRENT_TIMESTAMP,
     UNIQUE (id_usuario, id_evento),
-    FOREIGN KEY (id_usuario) REFERENCES usuarios(id)
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id) ON DELETE CASCADE
 );
 
- -- qr
- CREATE TABLE qr_tokens (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  token VARCHAR(100) UNIQUE NOT NULL,
-  id_evento INT NOT NULL DEFAULT 1,
-  fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
-  valido BOOLEAN DEFAULT 1
+-- Tabla de tokens QR
+CREATE TABLE qr_tokens (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    token VARCHAR(100) UNIQUE NOT NULL,
+    id_evento INT NOT NULL DEFAULT 1,
+    fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
+    valido BOOLEAN DEFAULT 1
 );
-CREATE TABLE IF NOT EXISTS asistencias (
+
+-- Tabla opcional de asistencias por token QR
+CREATE TABLE asistencias_qr (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario INT NOT NULL,
     token VARCHAR(255) NOT NULL,
     fecha_hora TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_usuario) REFERENCES usuarios(id)
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id) ON DELETE CASCADE
 );
 
+-- Insertar roles principales
+INSERT INTO roles (nombre) VALUES 
+    ('admin'), 
+    ('ponente'), 
+    ('evaluador'), 
+    ('asistente'), 
+    ('expositor');
 
+-- Insertar usuario administrador
+INSERT INTO usuarios (username, password, nombre, apellido, dni, email, telefono)
+VALUES (
+    'admin@admin.com',
+    '$2y$10$gzY2MfhsNoCJlYwIKKjMYuKW1S6aJmixtvTF2OtCkeo5X8kp.6hYq', -- admin123
+    'Admin',
+    'Principal',
+    '12345678',
+    'admin@admin.com',
+    '123456789'
+);
 
-    -- Crear usuario con contraseña
-    CREATE USER 'congreso_user'@'localhost' IDENTIFIED BY 'password123';
+-- Asignar rol admin
+INSERT INTO usuario_roles (id_usuario, id_rol)
+VALUES (1, 1); -- admin
 
-    -- Otorgar permisos para la base de datos congreso
-    GRANT ALL PRIVILEGES ON congreso.* TO 'congreso_user'@'localhost';
+-- Insertar usuario ponente
+INSERT INTO usuarios (username, password, nombre, apellido, dni, email, telefono)
+VALUES (
+    'ponente@ejemplo.com',
+    '$2y$10$2u5zF4jXaZhnXAoEyNSe.eUz7PlQUaHoU8hQAV2hArsPvC8I4b79y', -- ponente123
+    'Laura',
+    'Gómez',
+    '87654321',
+    'ponente@ejemplo.com',
+    '987654321'
+);
 
+-- Asignar rol ponente (id 2)
+INSERT INTO usuario_roles (id_usuario, id_rol)
+VALUES (LAST_INSERT_ID(), 2);
 
-    -- Aplicar los cambios de permisos
-    FLUSH PRIVILEGES;
-
+-- Crear usuario MySQL
+CREATE USER IF NOT EXISTS 'congreso_user'@'localhost' IDENTIFIED BY 'password123';
+GRANT ALL PRIVILEGES ON congreso.* TO 'congreso_user'@'localhost';
+FLUSH PRIVILEGES;
