@@ -16,6 +16,7 @@ $ejes_result = $conn->query("SELECT * FROM ejes ORDER BY nombre");
     <meta charset="UTF-8">
     <title>Gestión de Ejes Temáticos</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="js.js"></script>
     <script>
       function toggleNuevoEje() {
         const form = document.getElementById('nuevoEjeForm');

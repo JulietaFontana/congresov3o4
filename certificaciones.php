@@ -39,6 +39,7 @@ $res = $stmt->get_result();
   <meta charset="UTF-8">
   <title>Mis Certificados</title>
   <link rel="stylesheet" href="styles.css">
+  <script src="js.js"></script>
 </head>
 <body>
 

@@ -28,6 +28,7 @@ while ($r = $roles_result->fetch_assoc()) {
     <meta charset="UTF-8">
     <title>Gestión de Usuarios</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="js.js"></script>
     <script>
       function toggleNuevoUsuario() {
         const form = document.getElementById('nuevoForm');

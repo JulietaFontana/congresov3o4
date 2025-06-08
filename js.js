@@ -1,10 +1,10 @@
 // Contador regresivo
-const countdownDate = new Date("2026-12-15T09:00:00").getTime();
+const globalCountdownDate = new Date("2026-12-15T09:00:00").getTime();
 
 function updateCountdown() {
     const now = new Date().getTime();
-    const distance = countdownDate - now;
-    
+    const distance = globalCountdownDate - now;
+
     const daysElem = document.getElementById("days");
     const hoursElem = document.getElementById("hours");
     const minutesElem = document.getElementById("minutes");
@@ -22,7 +22,7 @@ function updateCountdown() {
         secondsElem.innerText = seconds.toString().padStart(2, '0');
 
         if (distance < 0) {
-            clearInterval(countdownInterval);
+            clearInterval(globalCountdownInterval);
             daysElem.innerText = "00";
             hoursElem.innerText = "00";
             minutesElem.innerText = "00";
@@ -32,7 +32,7 @@ function updateCountdown() {
 }
 
 updateCountdown();
-const countdownInterval = setInterval(updateCountdown, 1000);
+const globalCountdownInterval = setInterval(updateCountdown, 1000);
 
 // Formulario de registro
 const regForm = document.getElementById("registration-form");
@@ -59,6 +59,7 @@ document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
         }
     });
 });
+
 // Animación de las barras del gráfico
 document.addEventListener('DOMContentLoaded', function() {
     setTimeout(() => {
@@ -70,20 +71,35 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 300);
 });
 
+// Notificaciones
 function toggleNotif() {
-  var dropdown = document.getElementById("notif-dropdown");
-  dropdown.classList.toggle("hidden");
+    var dropdown = document.getElementById("notif-dropdown");
+    dropdown.classList.toggle("hidden");
 
-  // Llamada para marcar notificaciones como leídas
-  if (!dropdown.classList.contains("hidden")) {
-    fetch('marcar_notif.php')
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          var notifCountElem = document.getElementById("notif-count");
-          notifCountElem.textContent = "0";
-          notifCountElem.classList.remove("active"); // También quitar color rojo si es necesario
+    // Llamada para marcar notificaciones como leídas
+    if (!dropdown.classList.contains("hidden")) {
+        fetch('marcar_notif.php')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    var notifCountElem = document.getElementById("notif-count");
+                    notifCountElem.textContent = "0";
+                    notifCountElem.classList.remove("active");
+                }
+            });
+    }
+}
+
+// Panel de Admin desplegable
+function toggleAdminMenu() {
+    document.getElementById("admin-menu").classList.toggle("show");
+}
+
+window.onclick = function(event) {
+    if (!event.target.matches('.admin-dropdown button')) {
+        const dropdowns = document.getElementsByClassName("dropdown-content");
+        for (let i = 0; i < dropdowns.length; i++) {
+            dropdowns[i].classList.remove("show");
         }
-      });
-  }
+    }
 }

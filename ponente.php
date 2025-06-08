@@ -31,6 +31,7 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 'ponente') {
 </main>
 
 <?php include 'footer.php'; ?>
+<script src="js.js"></script>
 
 </body>
 </html>

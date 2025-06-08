@@ -600,6 +600,46 @@ footer {
   font-size: 1.5rem;
   text-decoration: none;
 }
+/* header para que sea desplegable */
+
+.admin-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.admin-dropdown button {
+  background-color: #0066cc;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.admin-dropdown .dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #ffffff;
+  min-width: 180px;
+  box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+  z-index: 1;
+  right: 0;
+}
+
+.admin-dropdown .dropdown-content a {
+  color: black;
+  padding: 10px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.admin-dropdown .dropdown-content a:hover {
+  background-color: #f0f0f0;
+}
+
+.admin-dropdown .dropdown-content.show {
+  display: block;
+}
 
 /* Panel de administración */
 .admin-panel {

@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <header>
   <div class="top-bar2">
     <div class="header-brand">
@@ -9,7 +13,7 @@
       <?php if (!isset($_SESSION['nombre'])): ?>
         <a href="login.php" class="login-link">Iniciar sesión</a>
       <?php else: ?>
-        <span>👋 <?php echo $_SESSION['nombre'] . ' ' . $_SESSION['apellido']; ?></span>
+        <span>👋 <?= $_SESSION['nombre'] . ' ' . $_SESSION['apellido']; ?></span>
         <a href="logout.php" class="logout-link">Cerrar sesión</a>
 
         <!-- 🔔 Notificaciones -->
@@ -29,8 +33,8 @@
         ?>
         <div class="notif-container">
           <div class="notif-icon" onclick="toggleNotif()">
-            🔔 <span id="notif-count" <?php if($notif_count>0) echo 'class="active"'; ?>>
-              <?php echo $notif_count; ?>
+            🔔 <span id="notif-count" <?= $notif_count > 0 ? 'class="active"' : '' ?>>
+              <?= $notif_count ?>
             </span>
           </div>
           <div id="notif-dropdown" class="notif-dropdown hidden">
@@ -38,7 +42,7 @@
               <p>No hay notificaciones.</p>
             <?php else: ?>
               <?php foreach ($notif_list as $notif): ?>
-                <p><?php echo htmlspecialchars($notif['mensaje']); ?><?php if (!$notif['leida']) echo " 🔴"; ?></p>
+                <p><?= htmlspecialchars($notif['mensaje']); ?><?= !$notif['leida'] ? " 🔴" : "" ?></p>
               <?php endforeach; ?>
             <?php endif; ?>
           </div>
@@ -60,18 +64,21 @@
     <?php endif; ?>
 
     <?php if (isset($_SESSION['roles']) && in_array('admin', $_SESSION['roles'])): ?>
-      <a href="gestionar_usuarios.php" style="color: #ffcc00;">👥 Gestionar Usuarios</a>
-      <a href="gestionar_ejes.php" style="color: #ffcc00;">📚 Gestionar Ejes</a>
-
-      <?php
-        $hoy = date('Y-m-d');
-        $inicio_congreso = '2020-06-10';
-        $fin_congreso = '2029-06-12';
-        if ($hoy >= $inicio_congreso && $hoy <= $fin_congreso):
-      ?>
-        <a href="qr_dinamico.php" style="color: #ffcc00;">📷 QR Asistencia</a>
-      <?php endif; ?>
+      <div class="admin-dropdown">
+        <button onclick="toggleAdminMenu()">📂 Panel Administrador</button>
+        <div id="admin-menu" class="dropdown-content hidden">
+          <a href="gestionar_usuarios.php">👥 Gestionar Usuarios</a>
+          <a href="gestionar_ejes.php">📚 Gestionar Ejes</a>
+          <?php
+            $hoy = date('Y-m-d');
+            $inicio_congreso = '2020-06-10';
+            $fin_congreso = '2029-06-12';
+            if ($hoy >= $inicio_congreso && $hoy <= $fin_congreso):
+          ?>
+            <a href="qr_dinamico.php">📷 QR Asistencia</a>
+          <?php endif; ?>
+        </div>
+      </div>
     <?php endif; ?>
   </nav>
-
 </header>

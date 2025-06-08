@@ -22,6 +22,7 @@ $accesoHabilitado = ($hoy >= $inicioCongreso && $hoy <= $finCongreso);
   <title>Registro de Asistencia - QR Dinámico</title>
   <script src="qrcode.min.js"></script>
   <link rel="stylesheet" href="styles.css">
+  <script src="js.js"></script>
 </head>
 <body class="qr-page">
 
