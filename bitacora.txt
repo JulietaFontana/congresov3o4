@@ -1,0 +1,16 @@
+Agregamos la pestaña para administrar los usuarios siendo administrador
+
+Cambiamos el registro apra q pida ams datos, cambiar columnas BD, agregamos roles (user), y cambiamos el login para q pida email y no usuario, y ahrao arriba aparece nomeb y apellido en vez de usuario
+
+Agregamos un centro de notificaciones conectado a la base de datos de cada usuario. 
+
+Añadimos la generacion de certificado
+
+
+proximo tema la asistencia, mejorar el certificado generado y mejorar la estetica de certifcados.php
+acomodar los roles, pestaña de evaluar ponentes, darle la opcion al admin de agregar gente en ponencia y modificar la agenda
+Tema asistencia
+
+
+Preguntas 
+como vamos a gestionar los roles? cuantos van a existir en la pagina (admin, usuarios basicos y ponentes? o todos pueden ver la opcion de subri ponencia)

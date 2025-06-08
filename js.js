@@ -1,0 +1,89 @@
+// Contador regresivo
+const countdownDate = new Date("2026-12-15T09:00:00").getTime();
+
+function updateCountdown() {
+    const now = new Date().getTime();
+    const distance = countdownDate - now;
+    
+    const daysElem = document.getElementById("days");
+    const hoursElem = document.getElementById("hours");
+    const minutesElem = document.getElementById("minutes");
+    const secondsElem = document.getElementById("seconds");
+
+    if (daysElem && hoursElem && minutesElem && secondsElem) {
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        daysElem.innerText = days.toString().padStart(2, '0');
+        hoursElem.innerText = hours.toString().padStart(2, '0');
+        minutesElem.innerText = minutes.toString().padStart(2, '0');
+        secondsElem.innerText = seconds.toString().padStart(2, '0');
+
+        if (distance < 0) {
+            clearInterval(countdownInterval);
+            daysElem.innerText = "00";
+            hoursElem.innerText = "00";
+            minutesElem.innerText = "00";
+            secondsElem.innerText = "00";
+        }
+    }
+}
+
+updateCountdown();
+const countdownInterval = setInterval(updateCountdown, 1000);
+
+// Formulario de registro
+const regForm = document.getElementById("registration-form");
+if (regForm) {
+    regForm.addEventListener("submit", function(e) {
+        e.preventDefault();
+        const name = document.getElementById("name").value;
+        alert(`¡Gracias ${name} por registrarte! Hemos enviado un correo de confirmación con los detalles de tu inscripción.`);
+        this.reset();
+    });
+}
+
+// Navegación suave
+document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+            window.scrollTo({
+                top: targetElement.offsetTop - 60,
+                behavior: 'smooth'
+            });
+        }
+    });
+});
+// Animación de las barras del gráfico
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(() => {
+        const chartBars = document.querySelectorAll('.chart-bar');
+        chartBars.forEach(bar => {
+            const height = getComputedStyle(bar).getPropertyValue('--final-height');
+            bar.style.height = height;
+        });
+    }, 300);
+});
+
+function toggleNotif() {
+  var dropdown = document.getElementById("notif-dropdown");
+  dropdown.classList.toggle("hidden");
+
+  // Llamada para marcar notificaciones como leídas
+  if (!dropdown.classList.contains("hidden")) {
+    fetch('marcar_notif.php')
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          var notifCountElem = document.getElementById("notif-count");
+          notifCountElem.textContent = "0";
+          notifCountElem.classList.remove("active"); // También quitar color rojo si es necesario
+        }
+      });
+  }
+}
