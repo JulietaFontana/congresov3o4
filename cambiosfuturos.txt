@@ -1,0 +1,8 @@
+Falta agregar la pestaña para q los admin puedan crear notificaciones 
+
+acomodar indicadores con datos mas reales
+
+que se peudan ver als asistencias y  un contador  (pensaba en ahcer otra pestaña apra el admin que peuda verlo y de paso agregarlas manual pro cualqueri cosa)
+
+
+recortar los pdf y ahcer la epstaña del evaluador
