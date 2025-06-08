@@ -33,8 +33,14 @@ $accesoHabilitado = ($hoy >= $inicioCongreso && $hoy <= $finCongreso);
 
     <?php if ($accesoHabilitado): ?>
       <div class="qr-subtitle">Este código se actualiza automáticamente cada 60 segundos</div>
+      
       <div id="qrcode"></div>
-      <div id="countdown">⏳ Actualizando en: 60s</div>
+
+      <div id="countdown">
+        <span class="emoji">⏳</span>
+        <span id="count-text">Actualizando en: 60s</span>
+      </div>
+
       <p id="debug"></p>
     <?php else: ?>
       <p class="info">⚠️ El acceso al QR está habilitado solo entre el <?= $inicioCongreso ?> y el <?= $finCongreso ?>.</p>
@@ -51,13 +57,13 @@ let countdownInterval;
 
 function iniciarContador() {
   segundosRestantes = 60;
-  document.getElementById("countdown").innerText = "⏳ Actualizando en: 60s";
+  document.getElementById("count-text").innerText = "Actualizando en: 60s";
 
   if (countdownInterval) clearInterval(countdownInterval);
 
   countdownInterval = setInterval(() => {
     segundosRestantes--;
-    document.getElementById("countdown").innerText = `⏳ Actualizando en: ${segundosRestantes}s`;
+    document.getElementById("count-text").innerText = `Actualizando en: ${segundosRestantes}s`;
     if (segundosRestantes <= 0) clearInterval(countdownInterval);
   }, 1000);
 }
@@ -76,19 +82,26 @@ async function generarQR() {
     contenedor.innerHTML = "";
 
     const canvas = document.createElement("canvas");
+
+    // ✅ Estilos para centrar el QR
+    canvas.style.display = "block";
+    canvas.style.margin = "0 auto";
+    canvas.style.width = "100%";
+    canvas.style.maxWidth = "256px";
+
     contenedor.appendChild(canvas);
 
     QRCode.toCanvas(canvas, url, function (error) {
       if (error) {
         console.error("⚠️ Error al generar QR:", error);
-        document.getElementById("countdown").innerText = "❌ Error al generar QR";
+        document.getElementById("count-text").innerText = "❌ Error al generar QR";
       }
     });
 
     iniciarContador();
   } catch (e) {
     console.error("⚠️ Error general:", e);
-    document.getElementById("countdown").innerText = "❌ Error: " + e.message;
+    document.getElementById("count-text").innerText = "❌ Error: " + e.message;
   }
 }
 

@@ -51,7 +51,8 @@ body {
   max-width: 500px;
   margin: 0 auto;
   border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
 }
 
 .qr-card h2 {
@@ -65,14 +66,29 @@ body {
 }
 
 #qrcode {
-  margin: 20px 0;
+  margin-bottom: 20px;
+  text-align: center;
 }
 
+#qrcode canvas {
+  display: block;
+  margin: 0 auto;
+  max-width: 256px;
+  width: 100%;
+}
 #countdown {
   font-size: 18px;
   font-weight: bold;
   color: #0088cc;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin: 0 auto;         /* ✅ esto lo alinea con el QR */
+  text-align: center;     /* ✅ refuerzo para que el texto se vea bien */
 }
+
+
 
 #debug {
   display: none;
