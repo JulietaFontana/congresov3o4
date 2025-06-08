@@ -1,5 +1,10 @@
 <header>
-  <div class="top-bar">
+  <div class="top-bar2">
+    <div class="header-brand">
+      <img src="img/redgtec.png" alt="Logo Congreso" class="logo-congreso">
+      <span class="nombre-congreso">Congreso de Gestores Tecnológicos</span>
+    </div>
+
     <div class="login-container">
       <?php if (!isset($_SESSION['nombre'])): ?>
         <a href="login.php" class="login-link">Iniciar sesión</a>
@@ -25,7 +30,7 @@
         <div class="notif-container">
           <div class="notif-icon" onclick="toggleNotif()">
             🔔 <span id="notif-count" <?php if($notif_count>0) echo 'class="active"'; ?>>
-                <?php echo $notif_count; ?>
+              <?php echo $notif_count; ?>
             </span>
           </div>
           <div id="notif-dropdown" class="notif-dropdown hidden">
@@ -56,7 +61,6 @@
 
     <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'admin'): ?>
       <a href="gestionar_usuarios.php" style="color: #ffcc00;">👥 Gestionar Usuarios</a>
-
       <?php
         $hoy = date('Y-m-d');
         $inicio_congreso = '2020-06-10';

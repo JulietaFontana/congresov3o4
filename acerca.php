@@ -1,4 +1,5 @@
 <?php session_start(); ?>
+<?php include 'header.php'; ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -9,7 +10,7 @@
   <script src="js.js" defer></script>
 </head>
 <body>
-    <?php include 'header.php'; ?>
+
   
   <main>
     <section id="acerca">
@@ -103,7 +104,8 @@
             <a href="#" class="btn">Solicitar acceso al panel</a>
         </div>
     </div>
-<?php include 'footer.php'; ?>
+
   </main>
+<?php include 'footer.php'; ?>
 </body>
 </html>
