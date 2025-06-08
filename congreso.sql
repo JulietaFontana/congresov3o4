@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
 -- Nueva tabla de roles
 CREATE TABLE IF NOT EXISTS roles (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(20) NOT NULL UNIQUE -- ej: 'admin', 'ponente', 'user'
+    nombre VARCHAR(20) NOT NULL UNIQUE -- ej: 'admin', 'ponente', 'evaluador'
 );
 
 -- Tabla de unión usuarios-roles (relación muchos a muchos)
@@ -28,8 +28,13 @@ CREATE TABLE IF NOT EXISTS usuario_roles (
     FOREIGN KEY (id_rol) REFERENCES roles(id)
 );
 
--- Insertar roles básicos
-INSERT INTO roles (nombre) VALUES ('admin'), ('ponente'), ('user');
+-- Insertar roles básicos y extendidos
+INSERT INTO roles (nombre) VALUES 
+    ('admin'), 
+    ('ponente'), 
+    ('evaluador'), 
+    ('asistente'), 
+    ('expositor');
 
 -- Insertar usuario admin
 INSERT INTO usuarios (username, password, nombre, apellido, dni, email, telefono)
@@ -43,11 +48,10 @@ VALUES (
     '123456789'
 );
 
--- Asignar múltiples roles al usuario admin (ej: admin y user)
+-- Asignar múltiples roles al usuario admin (ej: admin)
 INSERT INTO usuario_roles (id_usuario, id_rol)
 VALUES 
-    (1, 1), -- admin
-    (1, 3); -- user
+    (1, 1); -- admin
 
 -- Tabla de notificaciones
 CREATE TABLE IF NOT EXISTS notificaciones (
@@ -86,7 +90,7 @@ CREATE TABLE IF NOT EXISTS qr_tokens (
     valido BOOLEAN DEFAULT 1
 );
 
--- Tabla de asistencias por token QR (opcional si deseas mantenerla)
+-- Tabla de asistencias por token QR (opcional)
 CREATE TABLE IF NOT EXISTS asistencias_qr (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario INT NOT NULL,
@@ -97,18 +101,14 @@ CREATE TABLE IF NOT EXISTS asistencias_qr (
 
 -- Crear usuario de base de datos
 CREATE USER 'congreso_user'@'localhost' IDENTIFIED BY 'password123';
-
--- Otorgar permisos
 GRANT ALL PRIVILEGES ON congreso.* TO 'congreso_user'@'localhost';
 FLUSH PRIVILEGES;
-
-
 
 -- Insertar un nuevo usuario (solo rol ponente)
 INSERT INTO usuarios (username, password, nombre, apellido, dni, email, telefono)
 VALUES (
     'ponente@ejemplo.com',
-    '$2y$10$2u5zF4jXaZhnXAoEyNSe.eUz7PlQUaHoU8hQAV2hArsPvC8I4b79y', -- hash de ponente123
+    '$2y$10$2u5zF4jXaZhnXAoEyNSe.eUz7PlQUaHoU8hQAV2hArsPvC8I4b79y', -- ponente123
     'Laura',
     'Gómez',
     '87654321',
