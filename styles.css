@@ -715,6 +715,26 @@ footer {
   font-size: 0.8rem;
   color: #666;
 }
+/*   paginad e subri ponencia */
+.ponencia-actual {
+  margin-top: 30px;
+  background-color: #f1f8ff;
+  padding: 20px;
+  border-radius: 8px;
+  border-left: 4px solid #004080;
+}
+
+.ponencia-actual h3 {
+  margin-bottom: 10px;
+}
+
+.comentario-evaluador blockquote {
+  margin: 10px 0;
+  padding: 10px;
+  background: #fff;
+  border-left: 3px solid #0088cc;
+  font-style: italic;
+}
 
 /* Responsive: dispositivos móviles */
 @media (max-width: 768px) {
