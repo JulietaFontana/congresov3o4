@@ -14,6 +14,13 @@
   <section class="login-section">
     <div class="container">
       <h2>Iniciar sesión</h2>
+
+      <?php if (isset($_SESSION['login_error'])): ?>
+        <div class="error-message" style="color: red; text-align: center;">
+          <?php echo $_SESSION['login_error']; unset($_SESSION['login_error']); ?>
+        </div>
+      <?php endif; ?>
+
       <form method="POST" action="validar_login.php">
         <div class="form-group">
             <label for="email">Correo electrónico</label>

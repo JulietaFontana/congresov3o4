@@ -2,8 +2,8 @@
 session_start();
 require 'db.php';
 
-$email = $_POST['email'];
-$password = $_POST['password'];
+$email = $_POST['email'] ?? '';
+$password = $_POST['password'] ?? '';
 
 $sql = "SELECT * FROM usuarios WHERE email = ?";
 $stmt = $conn->prepare($sql);
@@ -18,7 +18,7 @@ if ($user && password_verify($password, $user['password'])) {
     $_SESSION['email'] = $user['email'];
     $_SESSION['id'] = $user['id'];
 
-    // 🚨 Nueva parte: Obtener todos los roles
+    // Obtener todos los roles
     $roles_sql = "
         SELECT r.nombre 
         FROM usuario_roles ur
@@ -35,10 +35,13 @@ if ($user && password_verify($password, $user['password'])) {
         $roles[] = $row['nombre'];
     }
 
-    $_SESSION['roles'] = $roles; // Guarda todos los roles en sesión
+    $_SESSION['roles'] = $roles;
 
     header("Location: index.php");
+    exit;
 } else {
-    echo "Credenciales inválidas.";
+    $_SESSION['login_error'] = "Correo o contraseña inválidos.";
+    header("Location: login.php");
+    exit;
 }
 ?>

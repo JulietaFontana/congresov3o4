@@ -40,6 +40,32 @@ CREATE TABLE notificaciones (
     leida BOOLEAN NOT NULL DEFAULT 0,
     fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+-- Ya existe la tabla de notificaciones:
+-- Tabla de notificaciones
+CREATE TABLE notificaciones (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_email VARCHAR(100) NOT NULL,
+    mensaje TEXT NOT NULL,
+    leida BOOLEAN NOT NULL DEFAULT 0,
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Lo único que necesitamos para mostrar notificaciones generales (visibles a todos, no personales) 
+-- es permitir mensajes sin destinatario específico (usuario_email NULL)
+-- entonces podemos modificar la tabla así:
+
+ALTER TABLE notificaciones 
+MODIFY COLUMN usuario_email VARCHAR(100) NULL;
+
+-- Con esto, los administradores pueden seguir enviando notificaciones personales (a un email)
+-- o generales (dejando usuario_email en NULL al insertarlas)
+
+-- Si querés, también podemos agregar un campo "tipo" para diferenciar entre generales y personales:
+ALTER TABLE notificaciones ADD COLUMN tipo ENUM('general', 'personal') DEFAULT 'general';
+
+-- Así podrías filtrar luego en el sistema dependiendo del tipo:
+-- SELECT * FROM notificaciones WHERE tipo = 'general'
+-- SELECT * FROM notificaciones WHERE usuario_email = 'ejemplo@correo.com' AND tipo = 'personal';
 
 -- Tabla de certificados
 CREATE TABLE certificados (
