@@ -40,15 +40,6 @@ CREATE TABLE notificaciones (
     leida BOOLEAN NOT NULL DEFAULT 0,
     fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
--- Ya existe la tabla de notificaciones:
--- Tabla de notificaciones
-CREATE TABLE notificaciones (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    usuario_email VARCHAR(100) NOT NULL,
-    mensaje TEXT NOT NULL,
-    leida BOOLEAN NOT NULL DEFAULT 0,
-    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
 
 -- Lo único que necesitamos para mostrar notificaciones generales (visibles a todos, no personales) 
 -- es permitir mensajes sin destinatario específico (usuario_email NULL)
@@ -142,33 +133,19 @@ INSERT INTO roles (nombre) VALUES
     ('asistente'), 
     ('expositor');
 
--- Insertar usuario administrador
-INSERT INTO usuarios (username, password, nombre, apellido, dni, email, telefono)
-VALUES (
-    'admin@admin.com',
-    '$2y$10$gzY2MfhsNoCJlYwIKKjMYuKW1S6aJmixtvTF2OtCkeo5X8kp.6hYq', -- admin123
-    'Admin',
-    'Principal',
-    '12345678',
-    'admin@admin.com',
-    '123456789'
-);
+-- Insertar usuarios con contraseña "admin123"
+INSERT INTO usuarios (username, password, nombre, apellido, dni, email, telefono) VALUES
+('admin@admin.com', '$2y$10$HxQTM.aQ5WVPGV1Vrqi2OepJ6BEPE1fuhZjjPk7ogIC5IWFrOBAjC', 'Admin', 'Principal', '12345678', 'admin@admin.com', '123456789'),
+('ponente1@correo.com', '$2y$10$HxQTM.aQ5WVPGV1Vrqi2OepJ6BEPE1fuhZjjPk7ogIC5IWFrOBAjC', 'Laura', 'Gómez', '87654321', 'ponente1@correo.com', '111111111'),
+('evaluador1@correo.com', '$2y$10$HxQTM.aQ5WVPGV1Vrqi2OepJ6BEPE1fuhZjjPk7ogIC5IWFrOBAjC', 'Carlos', 'Pérez', '11223344', 'evaluador1@correo.com', '222222222'),
+('asistente1@correo.com', '$2y$10$HxQTM.aQ5WVPGV1Vrqi2OepJ6BEPE1fuhZjjPk7ogIC5IWFrOBAjC', 'Ana', 'Martínez', '33445566', 'asistente1@correo.com', '333333333'),
+('expositor1@correo.com', '$2y$10$HxQTM.aQ5WVPGV1Vrqi2OepJ6BEPE1fuhZjjPk7ogIC5IWFrOBAjC', 'Luis', 'Sosa', '44556677', 'expositor1@correo.com', '444444444');
+
 
 -- Asignar rol admin
 INSERT INTO usuario_roles (id_usuario, id_rol)
 VALUES (1, 1); -- admin
 
--- Insertar usuario ponente
-INSERT INTO usuarios (username, password, nombre, apellido, dni, email, telefono)
-VALUES (
-    'ponente@ejemplo.com',
-    '$2y$10$2u5zF4jXaZhnXAoEyNSe.eUz7PlQUaHoU8hQAV2hArsPvC8I4b79y', -- ponente123
-    'Laura',
-    'Gómez',
-    '87654321',
-    'ponente@ejemplo.com',
-    '987654321'
-);
 
 -- Asignar rol ponente (id 2)
 INSERT INTO usuario_roles (id_usuario, id_rol)
