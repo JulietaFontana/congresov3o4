@@ -141,15 +141,18 @@ INSERT INTO usuarios (username, password, nombre, apellido, dni, email, telefono
 ('asistente1@correo.com', '$2y$10$HxQTM.aQ5WVPGV1Vrqi2OepJ6BEPE1fuhZjjPk7ogIC5IWFrOBAjC', 'Ana', 'Martínez', '33445566', 'asistente1@correo.com', '333333333'),
 ('expositor1@correo.com', '$2y$10$HxQTM.aQ5WVPGV1Vrqi2OepJ6BEPE1fuhZjjPk7ogIC5IWFrOBAjC', 'Luis', 'Sosa', '44556677', 'expositor1@correo.com', '444444444');
 
+INSERT INTO ejes (nombre) VALUES 
+('Tecnología e Innovación'),
+('Educación y Sociedad'),
+('Salud y Medio Ambiente');
 
--- Asignar rol admin
-INSERT INTO usuario_roles (id_usuario, id_rol)
-VALUES (1, 1); -- admin
-
-
--- Asignar rol ponente (id 2)
-INSERT INTO usuario_roles (id_usuario, id_rol)
-VALUES (LAST_INSERT_ID(), 2);
+-- Asignar roles
+INSERT INTO usuario_roles (id_usuario, id_rol) VALUES
+(1, 1), -- admin
+(2, 2), -- ponente
+(3, 3), -- evaluador
+(4, 4), -- asistente
+(5, 5); -- expositor
 
 -- Crear usuario MySQL (opcional)
 CREATE USER IF NOT EXISTS 'congreso_user'@'localhost' IDENTIFIED BY 'password123';
