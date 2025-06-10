@@ -62,7 +62,9 @@ session_start();
     <?php if (isset($_SESSION['roles']) && in_array('ponente', $_SESSION['roles'])): ?>
       <a href="subir_ponencia.php" style="color: #ffcc00;">📄 Subir ponencia</a>
     <?php endif; ?>
-
+    <?php if (isset($_SESSION['roles']) && in_array('evaluador', $_SESSION['roles'])): ?>
+      <a href="evaluar_ponencias.php" style="color: #ffcc00;">📑 Evaluar Ponencias</a>
+    <?php endif; ?>
     <?php if (isset($_SESSION['roles']) && in_array('admin', $_SESSION['roles'])): ?>
       <div class="admin-dropdown">
         <button onclick="toggleAdminMenu()">📂 Panel Administrador</button>

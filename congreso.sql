@@ -104,11 +104,35 @@ CREATE TABLE asistencias_qr (
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id) ON DELETE CASCADE
 );
 
--- ✅ Tabla de Ejes Temáticos
+-- Tabla de Ejes Temáticos
 CREATE TABLE ejes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL
 );
+
+-- Tabla de Ponencias (✅ con evaluación y comentario)
+CREATE TABLE ponencias (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_usuario INT NOT NULL,
+    id_eje INT NOT NULL,
+    archivo VARCHAR(255) NOT NULL,
+    fecha_subida DATETIME DEFAULT CURRENT_TIMESTAMP,
+    fue_evaluada BOOLEAN DEFAULT 0,
+    comentario TEXT,
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_eje) REFERENCES ejes(id) ON DELETE CASCADE
+);
+-- Tabla para asignar evaluadores a ponencias
+CREATE TABLE ponencia_evaluador (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_ponencia INT NOT NULL,
+    id_evaluador INT NOT NULL,
+    evaluacion TEXT,
+    fecha_evaluacion DATETIME,
+    FOREIGN KEY (id_ponencia) REFERENCES ponencias(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_evaluador) REFERENCES usuarios(id) ON DELETE CASCADE
+);
+
 
 -- Insertar roles principales
 INSERT INTO roles (nombre) VALUES 
@@ -145,17 +169,6 @@ VALUES (
     'ponente@ejemplo.com',
     '987654321'
 );
--- Tabla de ponencias
-CREATE TABLE ponencias (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    id_usuario INT NOT NULL,
-    id_eje INT NOT NULL,
-    archivo VARCHAR(255) NOT NULL,
-    fecha_subida DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_usuario) REFERENCES usuarios(id) ON DELETE CASCADE,
-    FOREIGN KEY (id_eje) REFERENCES ejes(id) ON DELETE CASCADE
-);
-
 
 -- Asignar rol ponente (id 2)
 INSERT INTO usuario_roles (id_usuario, id_rol)
@@ -165,3 +178,7 @@ VALUES (LAST_INSERT_ID(), 2);
 CREATE USER IF NOT EXISTS 'congreso_user'@'localhost' IDENTIFIED BY 'password123';
 GRANT ALL PRIVILEGES ON congreso.* TO 'congreso_user'@'localhost';
 FLUSH PRIVILEGES;
+
+
+ALTER TABLE ponencia_evaluador
+ADD COLUMN estado ENUM('aprobada', 'desaprobada') DEFAULT NULL;

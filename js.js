@@ -103,3 +103,37 @@ window.onclick = function(event) {
         }
     }
 }
+
+// Subida de ponencias vía AJAX
+const ponenciaForm = document.querySelector('form[action="guardar_ponencia.php"]');
+if (ponenciaForm) {
+    ponenciaForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(ponenciaForm);
+        const messageBox = document.createElement("div");
+        messageBox.style.textAlign = "center";
+        messageBox.style.padding = "15px";
+        messageBox.style.marginTop = "15px";
+        messageBox.style.fontWeight = "bold";
+
+        fetch("guardar_ponencia.php", {
+            method: "POST",
+            body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+            messageBox.textContent = data.message;
+            messageBox.style.color = data.success ? "green" : "red";
+            ponenciaForm.parentNode.appendChild(messageBox);
+            if (data.success) ponenciaForm.reset();
+        })
+        .catch(err => {
+            messageBox.textContent = "❌ Error inesperado al subir la ponencia.";
+            messageBox.style.color = "red";
+            ponenciaForm.parentNode.appendChild(messageBox);
+            console.error(err);
+        });
+    });
+}
+
