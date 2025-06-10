@@ -42,30 +42,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['ponencia']) && isset(
         $id_ponencia = $stmt->insert_id;
         $stmt->close();
 
+        // Obtener evaluadores disponibles (excepto el usuario actual)
         $evaluadores_sql = "
-                SELECT u.id FROM usuarios u
-                JOIN usuario_roles ur ON u.id = ur.id_usuario
-                JOIN roles r ON ur.id_rol = r.id
-                WHERE r.nombre = 'evaluador' AND u.id != ?
-            ";
+            SELECT u.id FROM usuarios u
+            JOIN usuario_roles ur ON u.id = ur.id_usuario
+            JOIN roles r ON ur.id_rol = r.id
+            WHERE r.nombre = 'evaluador' AND u.id != ?
+        ";
 
-            $stmt_e = $conn->prepare($evaluadores_sql);
-            $stmt_e->bind_param("i", $id_usuario);
-            $stmt_e->execute();
-            $evaluadores_result = $stmt_e->get_result();
-            $evaluadores = [];
-            while ($row = $evaluadores_result->fetch_assoc()) {
-                $evaluadores[] = $row['id'];
-            }
-            $stmt_e->close();
-        $evaluadores_result = $conn->query($evaluadores_sql);
+        $stmt_e = $conn->prepare($evaluadores_sql);
+        $stmt_e->bind_param("i", $id_usuario);
+        $stmt_e->execute();
+        $evaluadores_result = $stmt_e->get_result();
         $evaluadores = [];
         while ($row = $evaluadores_result->fetch_assoc()) {
             $evaluadores[] = $row['id'];
         }
+        $stmt_e->close();
 
         if (!empty($evaluadores)) {
             $evaluador_aleatorio = $evaluadores[array_rand($evaluadores)];
+
+            // Crear PDF sin la primera página
             $pdf = new Fpdi();
             $pageCount = $pdf->setSourceFile($rutaDestino);
             for ($i = 2; $i <= $pageCount; $i++) {
@@ -76,6 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['ponencia']) && isset(
             $archivoEvaluador = "ponencias/evaluacion_" . $nombreFinal;
             $pdf->Output("F", $archivoEvaluador);
 
+            // Asignar evaluador
             $stmt = $conn->prepare("INSERT INTO ponencia_evaluador (id_ponencia, id_evaluador) VALUES (?, ?)");
             $stmt->bind_param("ii", $id_ponencia, $evaluador_aleatorio);
             $stmt->execute();
