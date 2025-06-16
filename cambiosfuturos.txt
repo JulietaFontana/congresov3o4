@@ -14,7 +14,7 @@
 
 ------
 
-.q se asignar como ponentes
+.q se asignar como ponentes ....
 
 
 .pedir tipo de documento (verificar todos lso daots ingresados, como si fueran nenes)

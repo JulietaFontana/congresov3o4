@@ -1,8 +1,28 @@
-    // Obtener el ID del nuevo usuario
-    $id_usuario = $stmt->insert_id;
+<?php
+require 'db.php';
 
-    // Asignar el rol 'user' por defecto (id_rol = 3 asumiendo el orden de inserción)
-    $rol_stmt = $conn->prepare("INSERT INTO usuario_roles (id_usuario, id_rol) VALUES (?, ?)");
-    $rol_user_id = 3; // ⚠️ Asegurate que este sea el id del rol 'user'
-    $rol_stmt->bind_param("ii", $id_usuario, $rol_user_id);
-    $rol_stmt->execute();
+// Obtener los datos del formulario
+$nombre = $_POST['nombre'];
+$apellido = $_POST['apellido'];
+$dni = $_POST['dni'];
+$email = $_POST['email'];
+$cod_area = $_POST['cod_area'];
+$telefono = $_POST['telefono'];
+$password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+
+// Concatenar código de área + teléfono
+$telefono_completo = $cod_area . $telefono;
+
+// Insertar nuevo usuario
+$sql = "INSERT INTO usuarios (username, password, nombre, apellido, email, telefono, dni) 
+        VALUES (?, ?, ?, ?, ?, ?, ?)";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("sssssss", $email, $password, $nombre, $apellido, $email, $telefono_completo, $dni);
+
+if ($stmt->execute()) {
+    header("Location: login.php");
+    exit;
+} else {
+    echo "Error: " . $stmt->error;
+}
+?>
