@@ -36,10 +36,13 @@ $resultado = $stmt->get_result();
 <main class="container">
     <h2>Ponencias Asignadas</h2>
 
-    <?php while ($row = $resultado->fetch_assoc()): ?>
+    <?php while ($row = $resultado->fetch_assoc()):
+        $archivo_anonimo = str_replace("ponencia_", "", $row['archivo']);
+    ?>
         <div class="usuario-card">
             <div class="usuario-info">
-                <strong>Archivo:</strong> <a href="ponencias/evaluacion_<?= urlencode($row['archivo']) ?>" target="_blank">📄 Ver archivo</a><br>
+                <strong>Archivo:</strong> 
+                <a href="ponencias/evaluacion_<?= urlencode($archivo_anonimo) ?>" target="_blank">📄 Ver archivo</a><br>
                 <strong>Eje temático:</strong> <?= htmlspecialchars($row['eje']) ?><br>
                 <strong>Fecha de envío:</strong> <?= $row['fecha_subida'] ?><br>
                 <strong>Palabras clave:</strong> <?= htmlspecialchars($row['palabras_clave']) ?><br>
