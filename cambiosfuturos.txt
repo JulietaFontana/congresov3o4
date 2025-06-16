@@ -1,10 +1,10 @@
 ---subir ponencias---
 
-.ocultar nombre del autor
-.q puedan ser mas de un autor
-.palabras clave
-.mini resumen 
-.de dodne vienen
+.ocultar nombre del autor           
+.q puedan ser mas de un autor       -----
+.palabras clave                     -----
+.mini resumen                       -----
+.de dodne vienen                    -----
 
 ---evaluar ponencias---
 
@@ -15,7 +15,6 @@
 ------
 
 .q se asignar como ponentes ....
-
 
 .pedir tipo de documento (verificar todos lso daots ingresados, como si fueran nenes)
 
