@@ -44,6 +44,17 @@ if (regForm) {
         this.reset();
     });
 }
+function validarFormulario() {
+  const password = document.getElementById('password').value;
+  const confirmar = document.getElementById('confirmar_password').value;
+
+  if (password !== confirmar) {
+    alert("Las contraseñas no coinciden.");
+    return false;
+  }
+
+  return true;
+}
 
 // Navegación suave
 document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
@@ -164,6 +175,6 @@ if (ponenciaForm) {
 }
 
     function rechazarPonente() {
-    window.location.href = 'usuario_home.php';
+    window.location.href = 'index.php';
     }
 
