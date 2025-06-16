@@ -9,10 +9,10 @@ if (!isset($_SESSION['roles']) || !in_array('evaluador', $_SESSION['roles'])) {
 $id_evaluador = $_SESSION['id'];
 
 $sql = "
-    SELECT p.id, p.archivo, p.fecha_subida, e.nombre AS eje, u.nombre AS autor_nombre, u.apellido AS autor_apellido, pe.evaluacion
+    SELECT p.id, p.archivo, p.fecha_subida, e.nombre AS eje,
+           p.resumen, p.palabras_clave, pe.evaluacion, pe.estado
     FROM ponencias p
     INNER JOIN ponencia_evaluador pe ON p.id = pe.id_ponencia
-    INNER JOIN usuarios u ON p.id_usuario = u.id
     INNER JOIN ejes e ON p.id_eje = e.id
     WHERE pe.id_evaluador = ?
 ";
@@ -39,15 +39,17 @@ $resultado = $stmt->get_result();
     <?php while ($row = $resultado->fetch_assoc()): ?>
         <div class="usuario-card">
             <div class="usuario-info">
-                <strong>Archivo:</strong> <?= htmlspecialchars($row['archivo']) ?><br>
-                <strong>Autor:</strong> <?= htmlspecialchars($row['autor_nombre'] . " " . $row['autor_apellido']) ?><br>
+                <strong>Archivo:</strong> <a href="ponencias/evaluacion_<?= urlencode($row['archivo']) ?>" target="_blank">📄 Ver archivo</a><br>
                 <strong>Eje temático:</strong> <?= htmlspecialchars($row['eje']) ?><br>
-                <strong>Fecha:</strong> <?= $row['fecha_subida'] ?><br>
-                <a class="btn" href="ponencias/evaluacion_<?= urlencode($row['archivo']) ?>" target="_blank">📄 Ver archivo</a>
+                <strong>Fecha de envío:</strong> <?= $row['fecha_subida'] ?><br>
+                <strong>Palabras clave:</strong> <?= htmlspecialchars($row['palabras_clave']) ?><br>
+                <strong>Resumen:</strong><br>
+                <div style="margin-left: 1em;"><?= nl2br(htmlspecialchars($row['resumen'])) ?></div>
             </div>
             <div class="acciones">
                 <?php if ($row['evaluacion']): ?>
                     <p><strong>✅ Evaluado:</strong><br><?= nl2br(htmlspecialchars($row['evaluacion'])) ?></p>
+                    <p><strong>Estado:</strong> <?= $row['estado'] === 'aprobada' ? '✅ Aprobada' : '❌ Desaprobada' ?></p>
                 <?php else: ?>
                     <form method="POST" action="guardar_evaluacion.php">
                         <input type="hidden" name="id_ponencia" value="<?= $row['id'] ?>">
@@ -62,7 +64,6 @@ $resultado = $stmt->get_result();
                         <br>
                         <button class="btn-principal" type="submit">Enviar evaluación</button>
                     </form>
-
                 <?php endif; ?>
             </div>
         </div>
