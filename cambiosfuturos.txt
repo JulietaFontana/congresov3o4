@@ -1,8 +1,22 @@
-Falta agregar la pestaña para q los admin puedan crear notificaciones 
+---subir ponencias---
 
-acomodar indicadores con datos mas reales
+.ocultar nombre del autor
+.q puedan ser mas de un autor
+.palabras clave
+.mini resumen 
+.de dodne vienen
 
-que se peudan ver als asistencias y  un contador  (pensaba en ahcer otra pestaña apra el admin que peuda verlo y de paso agregarlas manual pro cualqueri cosa)
+---evaluar ponencias---
+
+.evaluadores por temas
+.que sean 2 evaluadores y considerar si hay empate (un tercero)
 
 
-recortar los pdf y ahcer la epstaña del evaluador
+------
+
+.q se asignar como ponentes
+
+
+.pedir tipo de documento (verificar todos lso daots ingresados, como si fueran nenes)
+
+.opcion de tomar asistencia a mano
