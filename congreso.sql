@@ -372,7 +372,10 @@ CREATE TABLE `usuarios` (
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+ALTER TABLE notificaciones 
+MODIFY COLUMN usuario_email VARCHAR(100) NULL;
 
+ALTER TABLE notificaciones ADD COLUMN tipo ENUM('general', 'personal') DEFAULT 'general';
 -- 2025-06-16 19:03:06 UTC
 
 

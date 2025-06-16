@@ -27,6 +27,42 @@ html {
 .form-row .form-group {
   flex: 1;
 }
+/*asistencia manual*/
+.admin-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.card-usuario {
+  border: 1px solid #ccc;
+  padding: 1.5rem;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  margin-bottom: 2rem;
+}
+
+.card-usuario h4 {
+  margin-top: 0;
+}
+
+.alert {
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+
+.alert-success {
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+  color: #155724;
+}
+
+.alert-warning {
+  background-color: #fff3cd;
+  border: 1px solid #ffeeba;
+  color: #856404;
+}
 
 /* asistir.php*/
 /* === Estilos específicos para asistir.php (confirmación de asistencia) === */
