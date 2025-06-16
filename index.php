@@ -36,11 +36,21 @@
         </div>
       </div>
 
-      <a href="#registro" class="btn btn-large">Reserva tu lugar ahora</a>
+      <button class="btn btn-large" onclick="abrirModal()">Queres ser ponente?</button>
+
     </div>
   </section>
 
   <?php include 'footer.php'; ?>
 </main>
+<div id="modalPonente" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="cerrarModal()">&times;</span>
+    <h2>¿Querés participar como ponente?</h2>
+    <button onclick="confirmarPonente()">Sí, quiero ser ponente</button>
+    <button onclick="rechazarPonente()">No, solo como asistente</button>
+  </div>
+</div>
+
 </body>
 </html>

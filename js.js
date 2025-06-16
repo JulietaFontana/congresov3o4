@@ -137,3 +137,33 @@ if (ponenciaForm) {
     });
 }
 
+//cambiar a ponente
+
+    function abrirModal() {
+    document.getElementById('modalPonente').style.display = 'block';
+    }
+
+    function cerrarModal() {
+    document.getElementById('modalPonente').style.display = 'none';
+    }
+
+    function confirmarPonente() {
+  fetch('verificar_login.php')
+    .then(res => res.json())
+    .then(data => {
+      if (data.logueado) {
+        // Cambiar rol a ponente y redirigir
+        fetch('cambiar_a_ponente.php', { method: 'POST' })
+          .then(() => {
+            window.location.href = 'subir_ponencia.php';
+          });
+      } else {
+        window.location.href = 'login.php';
+      }
+    });
+}
+
+    function rechazarPonente() {
+    window.location.href = 'usuario_home.php';
+    }
+

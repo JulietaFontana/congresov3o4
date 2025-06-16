@@ -30,6 +30,7 @@ $res = $conn->query("SELECT * FROM notificaciones ORDER BY fecha DESC");
   <meta charset="UTF-8">
   <title>Gestión de Notificaciones</title>
   <link rel="stylesheet" href="styles.css">
+  <script src="js.js"></script>
 </head>
 <body>
   <?php include 'header.php'; ?>
