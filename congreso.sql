@@ -48,15 +48,8 @@ CREATE TABLE notificaciones (
 ALTER TABLE notificaciones 
 MODIFY COLUMN usuario_email VARCHAR(100) NULL;
 
--- Con esto, los administradores pueden seguir enviando notificaciones personales (a un email)
--- o generales (dejando usuario_email en NULL al insertarlas)
-
--- Si querés, también podemos agregar un campo "tipo" para diferenciar entre generales y personales:
 ALTER TABLE notificaciones ADD COLUMN tipo ENUM('general', 'personal') DEFAULT 'general';
 
--- Así podrías filtrar luego en el sistema dependiendo del tipo:
--- SELECT * FROM notificaciones WHERE tipo = 'general'
--- SELECT * FROM notificaciones WHERE usuario_email = 'ejemplo@correo.com' AND tipo = 'personal';
 
 -- Tabla de certificados
 CREATE TABLE certificados (
