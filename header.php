@@ -72,6 +72,8 @@ session_start();
           <a href="gestionar_usuarios.php">👥 Gestionar Usuarios</a>
           <a href="gestionar_ejes.php">📚 Gestionar Ejes</a>
           <a href="admin_notificaciones.php">🔔 Gestionar Notificaciones</a>
+          <a href="asistencia_manual.php">Registrar Asistencia Manual</a>
+
           <?php
             $hoy = date('Y-m-d');
             $inicio_congreso = '2020-06-10';
