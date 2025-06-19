@@ -1,15 +1,15 @@
 ---subir ponencias---
 
-.ocultar nombre del autor           
-.q puedan ser mas de un autor       -----
-.palabras clave                     -----
-.mini resumen                       -----
-.de dodne vienen                    -----
+.ocultar nombre del autor                                           -----  
+.q puedan ser mas de un autor                                       -----
+.palabras clave                                                     -----
+.mini resumen                                                       -----
+.de dodne vienen                                                    -----
 
 ---evaluar ponencias---
 
-.evaluadores por temas
-.que sean 2 evaluadores y considerar si hay empate (un tercero)
+.evaluadores por temas                                              -----
+.que sean 2 evaluadores y considerar si hay empate (un tercero)     -----
 
 
 ------
